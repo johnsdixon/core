@@ -34,6 +34,7 @@ from .const import (
     CONF_TARIFF_ENTITY,
     DAILY,
     DATA_UTILITY,
+    HALF_HOURLY,
     HOURLY,
     MONTHLY,
     QUARTER_HOURLY,
@@ -248,6 +249,15 @@ class UtilityMeterSensor(RestoreEntity):
                     minute=(quarter * 15)
                     + self._period_offset.seconds % (15 * 60) // 60,
                     second=self._period_offset.seconds % 60,
+                )
+        elif self._period == HALF_HOURLY:
+            for half in range(2):
+                async_track_time_change(
+                    self.hass,
+                    self._async_reset_meter,
+                    minute=(half * 30)
+                    + self._period_offset.seconds % (30 * 60) // 60,
+                    second = self._period_offset.seconds % 60,
                 )
         elif self._period == HOURLY:
             async_track_time_change(
