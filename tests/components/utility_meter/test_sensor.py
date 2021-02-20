@@ -379,6 +379,20 @@ async def test_self_reset_quarter_hourly_third_quarter(hass, legacy_patchable_ti
     )
 
 
+async def test_self_reset_half_hourly_top_of_hour(hass, legacy_patchable_time):
+    """Test half-hourly reset of meter at top of hour."""
+    await _test_self_reset(
+        hass, gen_config("half-hourly"), "2017-12-31T23:59:00.000000+00:00"
+    )
+
+
+async def test_self_reset_half_hourly_bottom_of_hour(hass, legacy_patchable_time):
+    """Test half-hourly reset of meter at bottom of hour."""
+    await _test_self_reset(
+        hass, gen_config("half-hourly"), "2017-12-31T23:29:00.000000+00:00"
+    )
+
+
 async def test_self_reset_hourly(hass, legacy_patchable_time):
     """Test hourly reset of meter."""
     await _test_self_reset(
